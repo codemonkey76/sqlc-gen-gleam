@@ -1,5 +1,5 @@
 [package]
-name = "sqlc-gen-gleam-wasm"
+name = "sqlc-gen-gleam"
 version = "0.1.0"
 authors = ["Shane Poppleton <shane@bjja.com.au>"]
 edition = "2018"
