@@ -24,7 +24,7 @@ jobs:
 
       - name: Compute SHA256 checksum
         id: sha256
-        run: sha256sum target/wasm32-unknown-unknown/releases/sqlc-gen-gleam.wasm > sha256.txt
+        run: sha256sum target/wasm32-unknown-unknown/release/sqlc-gen-gleam.wasm > sha256.txt
 
       - name: Upload WASM artifact
         uses: actions/upload-artifact@v4
