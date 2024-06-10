@@ -43,23 +43,12 @@ jobs:
           draft: false
           prerelease: false
 
-      - name: Upload WASM to Release
-        uses: alexellis/upload-assets@0.4.1
+      - name: Upload Release Assets
+        uses: softprops/action-gh-release@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: target/wasm32-unknown-unknown/release/sqlc-gen-gleam.wasm
-          asset_name: sqlc-gen-gleam.wasm
-          asset_content_type: application/wasm
-
-      - name: Upload SHA256 to Release
-        uses: alexellis/upload-assets@0.4.1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: sha256.txt
-          asset_name: sha256.txt
-          asset_content_type: text/plain
+          files: |
+            target/wasm32-unknown-unknown/release/sqlc-gen-gleam.wasm
+            sha256.txt
 
