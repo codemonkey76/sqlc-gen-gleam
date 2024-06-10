@@ -1,0 +1,68 @@
+name: Build and release WASM
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install Rust toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          target: wasm32-unknown-unknown
+
+      - name: Build project
+        run: cargo build --release --target wasm32-unknwown-unknown
+
+      - name: Build project
+        run: cargo build --release --target wasm32-unknown-unknown
+
+      - name: Compute SHA256 checksum
+        id: sha256
+        run: sha256sum target/wasm32-unknown-unknown/releases/sqlc-gen-gleam.wasm > sha256.txt
+
+      - name: Upload WASM artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: sqlc-gen-gleam.wasm
+          path: target/wasm32-unknown-unknown/release/sqlc-gen-gleam.wasm
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+
+      - name: Upload WASM to Release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: target/wasm32-unknown-unknown/release/sqlc-gen-gleam.wasm
+          asset_name: sqlc-gen-gleam.wasm
+          asset_content_type: application/wasm
+
+      - name: Upload SHA256 to Release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: sha256.txt
+          asset_name: sha256.txt
+          asset_content_type: text/plain
+
