@@ -20,9 +20,6 @@ jobs:
           target: wasm32-unknown-unknown
 
       - name: Build project
-        run: cargo build --release --target wasm32-unknwown-unknown
-
-      - name: Build project
         run: cargo build --release --target wasm32-unknown-unknown
 
       - name: Compute SHA256 checksum
