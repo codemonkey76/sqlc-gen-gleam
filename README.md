@@ -1,1 +1,1 @@
-# sqlc-gen-json-wasm
+# sqlc-gen-gleam-wasm
